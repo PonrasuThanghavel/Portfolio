@@ -1,4 +1,4 @@
-name: Full Pipeline
+name: deploy
 
 on:
   push:
@@ -14,15 +14,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: vite-change # Checkout the source branch
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: main
-          branch: vite-change
+          head: vite-change # Correctly set the head branch
           title: "Auto PR from vite-change"
           body: "Changes ready for review."
+          create-pull-request-branch: "pr/vite-change" # Create a new branch for the PR
 
   approval-pr:
     runs-on: ubuntu-latest
